@@ -32,43 +32,22 @@ class TestCommand extends Command
     public function handle()
     {
         for ($j = 0; $j < 1; $j++) {
-            $count = 200000;
+            $count = 10000;
 
-            echo 'TIME before single insert for ' . $count . ':' . microtime(true) . PHP_EOL;
-            DB::table('admin_roles')->limit(50000)->update(['name'=>'test2']);
-            echo 'TIME before single insert for ' . $count . ':' . microtime(true) . PHP_EOL;
-            dd('done');
+            echo 'TIME before bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
             $time = Carbon::now();
-            Redis::pipeline(function ($pipe) use ($count,$time) {
-
-
-                for ($i = 0; $i < $count; $i++) {
-                    $pipe->set('key', $i);
-//            DB::table('admin_roles')->insert([
-//                'name'=>'test',
-//                'caption'=>'test',
-//                'description'=>'test',
-//                'created_at'=>$time,
-//                'updated_at'=>$time
-//            ]);
-                }
-            });
-            echo 'TIME after single insert for ' . $count . ':' . microtime(true) . PHP_EOL;
-
-//            echo 'TIME before bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
-//            $time = Carbon::now();
-//            $data = [];
-//            for ($i = 0; $i < $count; $i++) {
-//                $data[] = [
-//                    'name' => 'test',
-//                    'caption' => 'test',
-//                    'description' => 'test',
-//                    'created_at' => $time,
-//                    'updated_at' => $time
-//                ];
-//            }
-//            DB::table('admin_roles')->insert($data);
-//            echo 'TIME after bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
+            $data = [];
+            for ($i = 0; $i < $count; $i++) {
+                $data[] = [
+                    'name' => 'test',
+                    'caption' => 'test',
+                    'description' => 'test',
+                    'created_at' => $time,
+                    'updated_at' => $time
+                ];
+            }
+            DB::table('admin_roles')->insert($data);
+            echo 'TIME after bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
         }
 
         return 0;
