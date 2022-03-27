@@ -32,21 +32,20 @@ class TestCommand extends Command
     public function handle()
     {
         for ($j = 0; $j < 1; $j++) {
-            $count = 10000;
 
+            $count = 50000;
             echo 'TIME before bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
             $time = Carbon::now();
-            $data = [];
             for ($i = 0; $i < $count; $i++) {
-                $data[] = [
+
+                DB::table('admin_roles')->insert([
                     'name' => 'test',
                     'caption' => 'test',
                     'description' => 'test',
                     'created_at' => $time,
                     'updated_at' => $time
-                ];
+                ]);
             }
-            DB::table('admin_roles')->insert($data);
             echo 'TIME after bulk insert for ' . $count . ':' . microtime(true) . PHP_EOL;
         }
 
